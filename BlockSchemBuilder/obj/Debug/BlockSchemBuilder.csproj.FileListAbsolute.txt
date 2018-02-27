@@ -7,3 +7,6 @@ D:\ХАИ\Kurs2\V13\BlockSchemBuilder\BlockSchemBuilder\obj\Debug\BlockSchemBuil
 D:\ХАИ\Kurs2\V13\BlockSchemBuilder\BlockSchemBuilder\obj\Debug\BlockSchemBuilder.csproj.GenerateResource.Cache
 D:\ХАИ\Kurs2\V13\BlockSchemBuilder\BlockSchemBuilder\obj\Debug\BlockSchemBuilder.exe
 D:\ХАИ\Kurs2\V13\BlockSchemBuilder\BlockSchemBuilder\obj\Debug\BlockSchemBuilder.pdb
+C:\Users\werwo\Desktop\Универ\2 курс\Практика\ЛБ2\Github\VladRep\BlockSchemBuilder\BlockSchemBuilder\bin\Debug\BlockSchemBuilder.exe.config
+C:\Users\werwo\Desktop\Универ\2 курс\Практика\ЛБ2\Github\VladRep\BlockSchemBuilder\BlockSchemBuilder\obj\Debug\BlockSchemBuilder.exe
+C:\Users\werwo\Desktop\Универ\2 курс\Практика\ЛБ2\Github\VladRep\BlockSchemBuilder\BlockSchemBuilder\obj\Debug\BlockSchemBuilder.pdb
