@@ -1,0 +1,9 @@
+D:\ХАИ\Kurs2\V13\BlockSchemBuilder\BlockSchemBuilder\bin\Debug\BlockSchemBuilder.exe.config
+D:\ХАИ\Kurs2\V13\BlockSchemBuilder\BlockSchemBuilder\bin\Debug\BlockSchemBuilder.exe
+D:\ХАИ\Kurs2\V13\BlockSchemBuilder\BlockSchemBuilder\bin\Debug\BlockSchemBuilder.pdb
+D:\ХАИ\Kurs2\V13\BlockSchemBuilder\BlockSchemBuilder\obj\Debug\BlockSchemBuilder.csprojResolveAssemblyReference.cache
+D:\ХАИ\Kurs2\V13\BlockSchemBuilder\BlockSchemBuilder\obj\Debug\BlockSchemBuilder.frm_main.resources
+D:\ХАИ\Kurs2\V13\BlockSchemBuilder\BlockSchemBuilder\obj\Debug\BlockSchemBuilder.Properties.Resources.resources
+D:\ХАИ\Kurs2\V13\BlockSchemBuilder\BlockSchemBuilder\obj\Debug\BlockSchemBuilder.csproj.GenerateResource.Cache
+D:\ХАИ\Kurs2\V13\BlockSchemBuilder\BlockSchemBuilder\obj\Debug\BlockSchemBuilder.exe
+D:\ХАИ\Kurs2\V13\BlockSchemBuilder\BlockSchemBuilder\obj\Debug\BlockSchemBuilder.pdb
