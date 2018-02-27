@@ -59,7 +59,7 @@ namespace BlockSchemBuilder
             string type = words[start];
             if(type == "(")
             {
-                if(Array.IndexOf(words, "(", start) < Array.IndexOf(words, ")", start))
+                if(Array.IndexOf(words, type, start) < Array.IndexOf(words, ")", start))
                 {
                     int newStart = Array.IndexOf(words, "(", start) + 1;
                     int count = 0;
