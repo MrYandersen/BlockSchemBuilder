@@ -18,6 +18,7 @@ namespace BlockSchemBuilder
             functions = new functionBlock[0];
         }
 
+        //получение списка функций
         public void getFunctions()
         {
             string[] keywords = {"if", "while", "for", "foreach"};
@@ -41,6 +42,7 @@ namespace BlockSchemBuilder
             }
         }
 
+        //отображение на форме кнопок для каждой функции
         public void drawFunctions(FlowLayoutPanel panel)
         {
             panel.Controls.Clear();
@@ -48,12 +50,13 @@ namespace BlockSchemBuilder
             {
                 Button newBut = new Button();
                 newBut.AutoSize = true;
-                //newBut.Click += functions[i].drawSchematic;
+                newBut.Click += functions[i].drawSchematic;
                 newBut.Text = functions[i].Content;
                 panel.Controls.Add(newBut);
             }
         }
 
+        //метод возвращает позицию закрывающей скобки
         int getEndBracket(int start)
         {
             string type = words[start];
@@ -93,5 +96,7 @@ namespace BlockSchemBuilder
             }
             return -1;
         }
+
+
     }
 }

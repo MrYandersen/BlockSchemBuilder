@@ -19,7 +19,7 @@ namespace BlockSchemBuilder
             this.end = end;
         }
 
-        public void drawSchematic()
+        public void drawSchematic(object sender, EventArgs e)
         {
 
         }
