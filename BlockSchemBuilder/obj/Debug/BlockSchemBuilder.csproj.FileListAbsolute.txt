@@ -10,13 +10,3 @@ D:\ХАИ\Kurs2\V13\BlockSchemBuilder\BlockSchemBuilder\obj\Debug\BlockSchemBuil
 C:\Users\werwo\Desktop\Универ\2 курс\Практика\ЛБ2\Github\VladRep\BlockSchemBuilder\BlockSchemBuilder\bin\Debug\BlockSchemBuilder.exe.config
 C:\Users\werwo\Desktop\Универ\2 курс\Практика\ЛБ2\Github\VladRep\BlockSchemBuilder\BlockSchemBuilder\obj\Debug\BlockSchemBuilder.exe
 C:\Users\werwo\Desktop\Универ\2 курс\Практика\ЛБ2\Github\VladRep\BlockSchemBuilder\BlockSchemBuilder\obj\Debug\BlockSchemBuilder.pdb
-C:\Users\Anastasiia\Documents\GitHub\BlockSchemBuilder\BlockSchemBuilder\bin\Debug\BlockSchemBuilder.exe.config
-C:\Users\Anastasiia\Documents\GitHub\BlockSchemBuilder\BlockSchemBuilder\bin\Debug\BlockSchemBuilder.exe
-C:\Users\Anastasiia\Documents\GitHub\BlockSchemBuilder\BlockSchemBuilder\bin\Debug\BlockSchemBuilder.pdb
-C:\Users\Anastasiia\Documents\GitHub\BlockSchemBuilder\BlockSchemBuilder\obj\Debug\BlockSchemBuilder.csprojResolveAssemblyReference.cache
-C:\Users\Anastasiia\Documents\GitHub\BlockSchemBuilder\BlockSchemBuilder\obj\Debug\BlockSchemBuilder.frm_main.resources
-C:\Users\Anastasiia\Documents\GitHub\BlockSchemBuilder\BlockSchemBuilder\obj\Debug\BlockSchemBuilder.Properties.Resources.resources
-C:\Users\Anastasiia\Documents\GitHub\BlockSchemBuilder\BlockSchemBuilder\obj\Debug\BlockSchemBuilder.csproj.GenerateResource.Cache
-C:\Users\Anastasiia\Documents\GitHub\BlockSchemBuilder\BlockSchemBuilder\obj\Debug\BlockSchemBuilder.csproj.CoreCompileInputs.cache
-C:\Users\Anastasiia\Documents\GitHub\BlockSchemBuilder\BlockSchemBuilder\obj\Debug\BlockSchemBuilder.exe
-C:\Users\Anastasiia\Documents\GitHub\BlockSchemBuilder\BlockSchemBuilder\obj\Debug\BlockSchemBuilder.pdb
