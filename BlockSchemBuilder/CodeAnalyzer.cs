@@ -21,7 +21,7 @@ namespace BlockSchemBuilder
         //получение списка функций
         public void getFunctions()
         {
-            string[] keywords = {"if", "while", "for", "foreach"};
+            string[] keywords = {"if", "while", "for", "foreach", "catch", "using"};
             for (int i = 0; Array.IndexOf(words, "(", i) != -1;)
             {
                 int index = Array.IndexOf(words, "(", i);
