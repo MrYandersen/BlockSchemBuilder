@@ -4,23 +4,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using BlockSchemBuilder.Enum;
+
+
 namespace BlockSchemBuilder
 {
     class schematicBlock
     {
-        string content;
-        int x, y;
-        blockTypes type;
+		private BlockTypes _type;
 
-        public string Content { get => content; set => content = value; }
-        public int X { get => x; set => x = value; }
-        public int Y { get => y; set => y = value; }
-        public blockTypes Type { get => type;}
+		public List<schematicBlock> links;
 
-        public schematicBlock(string text, blockTypes type)
+        public string Content { get; set; }
+        public BlockTypes Type { get => _type; }
+
+        public schematicBlock(string text, BlockTypes type)
         {
-            content = text;
-            this.type = type;
+            Content = text;
+            _type = type;
+			links = new List<schematicBlock>();
         }
     }
 }

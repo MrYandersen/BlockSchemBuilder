@@ -47,7 +47,9 @@
   <ItemGroup>
     <Compile Include="CodeAnalyzer.cs" />
     <Compile Include="CodePreprocessor.cs" />
-    <Compile Include="enums.cs" />
+    <Compile Include="Enum\BlockTypes.cs" />
+    <Compile Include="Enum\ExitTypes.cs" />
+    <Compile Include="Extencions.cs" />
     <Compile Include="frm_main.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -35,7 +35,7 @@ namespace BlockSchemBuilder
                 code = code.Insert(i + 1, " ");
                 code = code.Insert(i, " ");
             }
-            string[] words = code.Split(new string[] { " ", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            string[] words = code.Split(new string[] { " ", "\r\n", "\t" }, StringSplitOptions.RemoveEmptyEntries);
             mergeStrings(ref words);
             return words;
         }
