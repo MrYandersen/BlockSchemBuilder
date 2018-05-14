@@ -10,14 +10,14 @@ namespace BlockSchemBuilder
     {
         string content;
         int x, y;
-        string type;
+        blockTypes type;
 
         public string Content { get => content; set => content = value; }
         public int X { get => x; set => x = value; }
         public int Y { get => y; set => y = value; }
-        public string Type { get => type;}
+        public blockTypes Type { get => type;}
 
-        public schematicBlock(string text, string type)
+        public schematicBlock(string text, blockTypes type)
         {
             content = text;
             this.type = type;

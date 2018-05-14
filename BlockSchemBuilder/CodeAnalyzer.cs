@@ -97,6 +97,9 @@ namespace BlockSchemBuilder
             return -1;
         }
 
+		Dictionary<exitTypes, schematicBlock> AnalyzeBlock(int start, int end)
+		{
 
+		}
     }
 }

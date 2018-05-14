@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="CodeAnalyzer.cs" />
     <Compile Include="CodePreprocessor.cs" />
+    <Compile Include="enums.cs" />
     <Compile Include="frm_main.cs">
       <SubType>Form</SubType>
     </Compile>
