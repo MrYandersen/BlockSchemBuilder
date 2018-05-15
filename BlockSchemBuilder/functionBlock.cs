@@ -8,7 +8,7 @@ using BlockSchemBuilder.Enum;
 
 namespace BlockSchemBuilder
 {
-    class functionBlock : schematicBlock
+    class functionBlock : SchemaBlock
     {
         string[] words;
 
@@ -19,11 +19,15 @@ namespace BlockSchemBuilder
 
         public void drawSchematic(object sender, EventArgs e)
         {
-			schematicBlock start = new schematicBlock("Begin", BlockTypes.Start);
+			SchemaBlock start = new SchemaBlock("Begin", BlockTypes.Start);
 			CodeAnalyzer ca = new CodeAnalyzer(ref words);
-			Dictionary<ExitTypes, schematicBlock> dic = ca.AnalyzeBlock(0, words.Length, start);
-			dic[ExitTypes.EndofBlock].links.Add(new schematicBlock("End", BlockTypes.Start));
-        }
+			Dictionary<ExitTypes, List<SchemaBlock>> dic = ca.AnalyzeBlock(0, words.Length - 1, new List<SchemaBlock> { start });
+			foreach(var item in dic[ExitTypes.EndofBlock])
+			{
+				item.links.Add(new SchemaBlock("End", BlockTypes.Start));
+			}
+
+		}
 
     }
 }

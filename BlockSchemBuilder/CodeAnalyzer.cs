@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-
+using System.Linq;
 using BlockSchemBuilder.Enum;
 
 namespace BlockSchemBuilder
@@ -10,6 +10,8 @@ namespace BlockSchemBuilder
 	{
 		string[] words;
 		functionBlock[] functions;
+
+		private readonly string[] IOtags = { "Console.WriteLine", "Console.Write", "Console.Read", "Console.ReadLine" };
 
 		public CodeAnalyzer(ref string[] words)
 		{
@@ -96,19 +98,62 @@ namespace BlockSchemBuilder
 			return -1;
 		}
 
-		public Dictionary<ExitTypes, schematicBlock> AnalyzeBlock(int start, int end, schematicBlock lastElement)
+		public Dictionary<ExitTypes, List<SchemaBlock>> AnalyzeBlock(int start, int end, List<SchemaBlock> lastElement)
 		{
-			Dictionary<ExitTypes, schematicBlock> dict = new Dictionary<ExitTypes, schematicBlock>();
-			schematicBlock prev = lastElement;
+			Dictionary<ExitTypes, List<SchemaBlock>> dict = new Dictionary<ExitTypes, List<SchemaBlock>>
+			{
+				[ExitTypes.EndofBlock] = new List<SchemaBlock>(),
+				[ExitTypes.Return] = new List<SchemaBlock>(),
+				[ExitTypes.Continue] = new List<SchemaBlock>(),
+				[ExitTypes.Break] = new List<SchemaBlock>()
+			};
+			List<SchemaBlock> prev = new List<SchemaBlock>(lastElement);
 
 			string currentBlockContent = "";
 			BlockTypes currentBlockType = BlockTypes.Operator;
 
-			for (int i = start; i < end; i++)
+			for (int i = start; i <= end; i++)
 			{
+				// Conditions handling
+				//
+				if (words[i] == "if")
+				{
+					i++;
+					while (words[++i] != ")")
+						currentBlockContent += words[i] + " ";
+
+					SchemaBlock block = new SchemaBlock(currentBlockContent, BlockTypes.Condition);
+					currentBlockContent = "";
+					foreach (SchemaBlock item in prev)
+					{
+						item.links.Add(block);
+					}
+					prev.Clear();
+					prev.Add(block);
+
+					if (words[++i] == "{") { dict = DictMix(dict, AnalyzeBlock(i + 1, i = getEndBracket(i) - 1, prev)); i++; }
+					else dict = DictMix(dict, AnalyzeBlock(i, i = Array.IndexOf(words, ";", i), prev));
+
+					if (words[++i] == "else")
+					{
+						if (words[++i] == "{") { dict = DictMix(dict, AnalyzeBlock(i + 1, i = getEndBracket(i) - 1, prev)); i++; }
+						else dict = DictMix(dict, AnalyzeBlock(i, i = Array.IndexOf(words, ";", i), prev));
+					}
+					else
+					{
+						dict[ExitTypes.EndofBlock] = prev.Union(dict[ExitTypes.EndofBlock]).ToList();
+						currentBlockContent += words[i] + " ";
+					}
+
+					prev = new List<SchemaBlock>(dict[ExitTypes.EndofBlock]);
+					dict[ExitTypes.EndofBlock].Clear();
+					continue;
+				}
+
+
 				if (words[i] != ";")
 				{
-					if (words[i] == "Console.WriteLine" || words[i] == "Console.Write" || words[i] == "Console.Read" || words[i] == "Console.ReadLine")
+					if (Array.IndexOf(IOtags, words[i]) != -1)
 					{
 						currentBlockType = BlockTypes.IO;
 					}
@@ -116,15 +161,35 @@ namespace BlockSchemBuilder
 				}
 				else
 				{
-					schematicBlock block = new schematicBlock(currentBlockContent, currentBlockType);
+					SchemaBlock block = new SchemaBlock(currentBlockContent, currentBlockType);
 					currentBlockContent = "";
 					currentBlockType = BlockTypes.Operator;
-					prev.links.Add(block);
-					prev = block;
+					foreach (SchemaBlock item in prev)
+					{
+						item.links.Add(block);
+					}
+					prev.Clear();
+					prev.Add(block);
 				}
 			}
-			dict[ExitTypes.EndofBlock] = prev;
+			dict[ExitTypes.EndofBlock] = prev.Union(dict[ExitTypes.EndofBlock]).ToList();
 			return dict;
 		}
-    }
+
+		Dictionary<ExitTypes, List<SchemaBlock>> DictMix(Dictionary<ExitTypes, List<SchemaBlock>> a, Dictionary<ExitTypes, List<SchemaBlock>> b)
+		{
+			Dictionary<ExitTypes, List<SchemaBlock>> temp = new Dictionary<ExitTypes, List<SchemaBlock>>();
+			foreach (var itemA in a)
+			{
+				foreach (var itemB in b)
+				{
+					if(itemA.Key == itemB.Key)
+					{
+						temp[itemA.Key] = itemA.Value.Union(itemB.Value).ToList();
+					}
+				}
+			}
+			return temp;
+		}
+	}
 }
