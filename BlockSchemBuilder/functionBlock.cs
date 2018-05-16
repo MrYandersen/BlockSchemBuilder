@@ -27,6 +27,8 @@ namespace BlockSchemBuilder
 				item.links.Add(new SchemaBlock("End", BlockTypes.Start));
 			}
 
+			frm_Schema form = new frm_Schema(start);
+			form.Show();
 		}
 
     }

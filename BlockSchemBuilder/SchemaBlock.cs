@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,14 +10,15 @@ using BlockSchemBuilder.Enum;
 
 namespace BlockSchemBuilder
 {
-    class SchemaBlock
+    public class SchemaBlock
     {
 		private BlockTypes _type;
 
 		public List<SchemaBlock> links;
 
         public string Content { get; set; }
-        public BlockTypes Type { get => _type; }
+		public Point fieldCoord { get; set; }
+		public BlockTypes Type { get => _type; }
 
         public SchemaBlock(string text, BlockTypes type)
         {
