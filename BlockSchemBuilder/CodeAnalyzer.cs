@@ -118,6 +118,7 @@ namespace BlockSchemBuilder
 				//
 				if (words[i] == "if")
 				{
+					#region "if" analyze
 					i++;
 					while (words[++i] != ")")
 						currentBlockContent += words[i] + " ";
@@ -133,7 +134,30 @@ namespace BlockSchemBuilder
 
 					if (words[++i] == "{") { dict = DictMix(dict, AnalyzeBlock(i + 1, i = getEndBracket(i) - 1, prev)); i++; }
 					else dict = DictMix(dict, AnalyzeBlock(i, i = Array.IndexOf(words, ";", i), prev));
+					#endregion
 
+					#region "else if" analyze 
+					while (words[i+1] == "else" && words[i + 2] == "if")
+					{
+						i += 3;
+						while (words[++i] != ")")
+							currentBlockContent += words[i] + " ";
+
+						block = new SchemaBlock(currentBlockContent, BlockTypes.Condition);
+						currentBlockContent = "";
+						foreach (SchemaBlock item in prev)
+						{
+							item.links.Add(block);
+						}
+						prev.Clear();
+						prev.Add(block);
+
+						if (words[++i] == "{") { dict = DictMix(dict, AnalyzeBlock(i + 1, i = getEndBracket(i) - 1, prev)); i++; }
+						else dict = DictMix(dict, AnalyzeBlock(i, i = Array.IndexOf(words, ";", i), prev));
+					}
+					#endregion
+
+					#region "else" analyze
 					if (words[++i] == "else")
 					{
 						if (words[++i] == "{") { dict = DictMix(dict, AnalyzeBlock(i + 1, i = getEndBracket(i) - 1, prev)); i++; }
@@ -144,6 +168,7 @@ namespace BlockSchemBuilder
 						dict[ExitTypes.EndofBlock] = prev.Union(dict[ExitTypes.EndofBlock]).ToList();
 						currentBlockContent += words[i] + " ";
 					}
+					#endregion
 
 					prev = new List<SchemaBlock>(dict[ExitTypes.EndofBlock]);
 					dict[ExitTypes.EndofBlock].Clear();

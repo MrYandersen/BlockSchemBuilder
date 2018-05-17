@@ -19,12 +19,14 @@ namespace BlockSchemBuilder
         public string Content { get; set; }
 		public Point fieldCoord { get; set; }
 		public BlockTypes Type { get => _type; }
+		public bool isPlaced { get; set; }
 
-        public SchemaBlock(string text, BlockTypes type)
+		public SchemaBlock(string text, BlockTypes type)
         {
             Content = text;
             _type = type;
 			links = new List<SchemaBlock>();
+			fieldCoord = new Point(0,0);
         }
 
 		public override string ToString()

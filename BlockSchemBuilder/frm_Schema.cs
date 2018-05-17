@@ -17,19 +17,19 @@ namespace BlockSchemBuilder
 		public frm_Schema(SchemaBlock start)
 		{
 			InitializeComponent();
-			drawer = new SchemaDrawer(start);
-			drawer.Draw(panel1);
+			drawer = new SchemaDrawer( start);
+			drawer.Draw(canvas);
 		}
 
 		private void panel1_Resize(object sender, EventArgs e)
 		{
-			drawer.Draw(panel1);
-			panel1.Invalidate();
+			drawer.Draw(canvas);
+			canvas.Invalidate();
 		}
 
 		private void panel1_Paint(object sender, PaintEventArgs e)
 		{
-			drawer.Draw(panel1);
+			drawer.Draw(canvas);
 		}
 	}
 }

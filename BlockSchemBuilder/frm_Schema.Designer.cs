@@ -29,7 +29,7 @@
 		private void InitializeComponent()
 		{
 			this.label1 = new System.Windows.Forms.Label();
-			this.panel1 = new System.Windows.Forms.Panel();
+			this.canvas = new System.Windows.Forms.Panel();
 			this.SuspendLayout();
 			// 
 			// label1
@@ -41,23 +41,26 @@
 			this.label1.TabIndex = 1;
 			this.label1.Text = "label1";
 			// 
-			// panel1
+			// canvas
 			// 
-			this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.canvas.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.panel1.Location = new System.Drawing.Point(0, 0);
-			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(785, 761);
-			this.panel1.TabIndex = 2;
-			this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
-			this.panel1.Resize += new System.EventHandler(this.panel1_Resize);
+			this.canvas.AutoScroll = true;
+			this.canvas.AutoSize = true;
+			this.canvas.Location = new System.Drawing.Point(0, 0);
+			this.canvas.Name = "canvas";
+			this.canvas.Size = new System.Drawing.Size(2983, 2000);
+			this.canvas.TabIndex = 2;
+			this.canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+			this.canvas.Resize += new System.EventHandler(this.panel1_Resize);
 			// 
 			// frm_Schema
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.AutoScroll = true;
 			this.ClientSize = new System.Drawing.Size(784, 761);
-			this.Controls.Add(this.panel1);
+			this.Controls.Add(this.canvas);
 			this.Controls.Add(this.label1);
 			this.Name = "frm_Schema";
 			this.Text = "Shema";
@@ -68,6 +71,6 @@
 
 		#endregion
 		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.Panel panel1;
+		private System.Windows.Forms.Panel canvas;
 	}
 }
