@@ -12,7 +12,7 @@ namespace BlockSchemBuilder
 		functionBlock[] functions;
 
 		private readonly string[] IOtags = { "Console.WriteLine", "Console.Write", "Console.Read", "Console.ReadLine" };
-
+		private readonly string[] ProcedureTags = { "(", ")", "new" };
 		public CodeAnalyzer(ref string[] words)
 		{
 			this.words = words;
@@ -175,12 +175,103 @@ namespace BlockSchemBuilder
 					continue;
 				}
 
+				if (words[i] == "while")
+				{
+					i++;
+					while (words[++i] != ")")
+						currentBlockContent += words[i] + " ";
+
+					SchemaBlock block = new SchemaBlock(currentBlockContent, BlockTypes.Condition);
+					currentBlockContent = "";
+					foreach (SchemaBlock item in prev)
+					{
+						item.links.Add(block);
+					}
+					prev.Clear();
+					prev.Add(block);
+
+					if (words[++i] == "{") { dict = DictMix(dict, AnalyzeBlock(i + 1, i = getEndBracket(i) - 1, prev)); i++; }
+					else dict = DictMix(dict, AnalyzeBlock(i, i = Array.IndexOf(words, ";", i), prev));
+
+					foreach (SchemaBlock item in dict[ExitTypes.EndofBlock])
+					{
+						item.links.Add(block);
+					}
+					dict[ExitTypes.EndofBlock].Clear();
+
+					foreach (SchemaBlock item in dict[ExitTypes.Continue])
+					{
+						item.links.Add(block);
+					}
+					dict[ExitTypes.Continue].Clear();
+
+					prev = prev.Union(dict[ExitTypes.Break]).ToList();
+					continue;
+				}
+
+				//Not working correct!!!
+				if(words[i] == "do")
+				{
+					if (words[++i] == "{") { dict = DictMix(dict, AnalyzeBlock(++i, i = getEndBracket(i - 1) - 1, prev)); i++; }
+					else dict = DictMix(dict, AnalyzeBlock(++i, i = Array.IndexOf(words, ";", i), prev));
+
+					i+=2;
+					while (words[++i] != ")")
+						currentBlockContent += words[i] + " ";
+
+					SchemaBlock block = new SchemaBlock(currentBlockContent, BlockTypes.Condition);
+					currentBlockContent = "";
+
+					SchemaBlock startBlock = prev[0].links[prev[0].links.Count - 1];
+					block.links.Add(startBlock);
+
+					foreach (SchemaBlock item in dict[ExitTypes.EndofBlock])
+					{
+						item.links.Add(block);
+					}
+					dict[ExitTypes.EndofBlock].Clear();
+
+					foreach (SchemaBlock item in dict[ExitTypes.Continue])
+					{
+						item.links.Add(block);
+					}
+					dict[ExitTypes.Continue].Clear();
+
+					prev.Clear();
+					prev.Add(block);
+					prev = prev.Union(dict[ExitTypes.Break]).ToList();
+
+					dict[ExitTypes.EndofBlock] = prev;
+					continue;
+				}
+
+				if(words[i] == "break")
+				{
+					dict[ExitTypes.Break] = dict[ExitTypes.Break].Union(prev).ToList();
+					return dict;
+				}
+
+				if(words[i] == "continue")
+				{
+					dict[ExitTypes.Continue] = dict[ExitTypes.Continue].Union(prev).ToList();
+					return dict;
+				}
+
+				if(words[i] == "return;")
+				{
+					dict[ExitTypes.Return] = dict[ExitTypes.Return].Union(prev).ToList();
+					return dict;
+				}
 
 				if (words[i] != ";")
 				{
 					if (Array.IndexOf(IOtags, words[i]) != -1)
 					{
 						currentBlockType = BlockTypes.IO;
+					}
+					else if (Array.IndexOf(ProcedureTags, words[i]) != -1)
+					{
+						currentBlockType = currentBlockType == BlockTypes.Operator ? BlockTypes.Procedure : currentBlockType;
 					}
 					currentBlockContent += words[i] + " ";
 				}

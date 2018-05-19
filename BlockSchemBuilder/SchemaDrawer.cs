@@ -35,10 +35,10 @@ namespace BlockSchemBuilder
 			int currentX = 0, currentY = 0;
 			Stack<SchemaBlock> stack = new Stack<SchemaBlock>();
 			stack.Push(_start);
-			while(stack.Count != 0)
+			while (stack.Count != 0)
 			{
 				SchemaBlock current = stack.Pop();
-				if(!current.isPlaced)
+				if (!current.isPlaced)
 				{
 					if (currentX < current.fieldCoord.X)
 					{
@@ -57,7 +57,7 @@ namespace BlockSchemBuilder
 						current.isPlaced = true;
 						if (current.links.Count > 0)
 						{
-							if(current.links[0].isPlaced && current.links[0].fieldCoord.Y <= current.fieldCoord.Y)
+							if (current.links[0].isPlaced && current.links[0].fieldCoord.Y <= current.fieldCoord.Y)
 							{
 								int shift = current.fieldCoord.Y - current.links[0].fieldCoord.Y + 1;
 								for (int i = 0; i < current.fieldCoord.X; i++)
@@ -65,14 +65,15 @@ namespace BlockSchemBuilder
 									for (int j = _height - 1; j >= current.fieldCoord.Y + shift; j--)
 									{
 										Matrix[j, i] = Matrix[j - shift, i];
-										if(Matrix[j, i] != null)
+										if (Matrix[j, i] != null)
 											Matrix[j, i].fieldCoord += new Size(0, shift);
 									}
 									Matrix[current.links[0].fieldCoord.Y - shift, i] = null;
 								}
 							}
-							stack.Push(current.links[0]);
-						}		
+							if (!stack.Contains(current.links[0]))
+								stack.Push(current.links[0]);
+						}
 					}
 					else
 					{
@@ -81,8 +82,11 @@ namespace BlockSchemBuilder
 						current.isPlaced = true;
 						for (int i = current.links.Count - 1; i >= 0; i--)
 						{
-							stack.Push(current.links[i]);
-							current.links[i].fieldCoord += new Size(i + currentX, currentY);
+							if (!stack.Contains(current.links[i]))
+							{
+								stack.Push(current.links[i]);
+								current.links[i].fieldCoord += new Size(i + currentX, currentY);
+							}	
 						}
 					}
 				}
@@ -102,36 +106,53 @@ namespace BlockSchemBuilder
 				{
 					if (item != null)
 					{
-						if (item.Type == BlockTypes.Operator)
+						switch (item.Type)
 						{
-							Rectangle a = new Rectangle(_fieldWidth * item.fieldCoord.X + _shift, _fieldHeight * item.fieldCoord.Y + _shift, _fieldWidth - 2 * _shift, _fieldHeight - 2 * _shift);
-							g.DrawRectangles(p, new RectangleF[] { a });
-							g.DrawString(item.Content, f, Brushes.Black, a, stringFormat);
-						}
-						else if (item.Type == BlockTypes.Start)
-						{
-							Rectangle a = new Rectangle(_fieldWidth * item.fieldCoord.X + _shift + _IOshift, _fieldHeight * item.fieldCoord.Y + _shift + _IOshift, _fieldWidth - 2 * (_shift + _IOshift), _fieldHeight - 2 * (_shift + _IOshift));
-							g.DrawEllipse(p, _fieldWidth * item.fieldCoord.X + _shift, _fieldHeight * item.fieldCoord.Y + _shift, 260, 60);
-							g.DrawString(item.Content, f, Brushes.Black, a, stringFormat);
-
-						}
-						else if (item.Type == BlockTypes.IO)
-						{
-							Rectangle a = new Rectangle(_fieldWidth * item.fieldCoord.X + _shift + _IOshift, _fieldHeight * item.fieldCoord.Y + _shift, _fieldWidth - 2 * (_shift + _IOshift), _fieldHeight - 2 * _shift);
-							g.DrawPolygon(p, new Point[] {  new Point(_fieldWidth * item.fieldCoord.X + _shift + _IOshift, _fieldHeight * item.fieldCoord.Y + _shift),
-															new Point(_fieldWidth * (item.fieldCoord.X + 1) - _shift, _fieldHeight * item.fieldCoord.Y + _shift),
-															new Point(_fieldWidth * (item.fieldCoord.X + 1) - _shift - _IOshift, _fieldHeight * (item.fieldCoord.Y + 1) - _shift),
-															new Point(_fieldWidth * item.fieldCoord.X + _shift, _fieldHeight * (item.fieldCoord.Y + 1) - _shift) });
-							g.DrawString(item.Content, f, Brushes.Black, a, stringFormat);
-						}
-						else if (item.Type == BlockTypes.Condition)
-						{
-							Rectangle a = new Rectangle(_fieldWidth * item.fieldCoord.X + _shift + _IOshift, _fieldHeight * item.fieldCoord.Y + _IOshift + _shift, _fieldWidth - 2 * (_shift + _IOshift), _fieldHeight - 2 * (_shift + _IOshift));
-							g.DrawPolygon(p, new Point[] {  new Point(_fieldWidth * item.fieldCoord.X + _shift, _fieldHeight * item.fieldCoord.Y + _fieldHeight / 2),
+							case BlockTypes.Operator:
+								{
+									Rectangle rec = new Rectangle(_fieldWidth * item.fieldCoord.X + _shift, _fieldHeight * item.fieldCoord.Y + _shift, _fieldWidth - 2 * _shift, _fieldHeight - 2 * _shift);
+									g.DrawRectangle(p, rec);
+									g.DrawString(item.Content, f, Brushes.Black, rec, stringFormat);
+									break;
+								}
+							case BlockTypes.Start:
+								{
+									Rectangle rec = new Rectangle(_fieldWidth * item.fieldCoord.X + _shift + _IOshift, _fieldHeight * item.fieldCoord.Y + _shift + _IOshift, _fieldWidth - 2 * (_shift + _IOshift), _fieldHeight - 2 * (_shift + _IOshift));
+									g.DrawEllipse(p, _fieldWidth * item.fieldCoord.X + _shift, _fieldHeight * item.fieldCoord.Y + _shift, 260, 60);
+									g.DrawString(item.Content, f, Brushes.Black, rec, stringFormat);
+									break;
+								}
+							case BlockTypes.IO:
+								{
+									Rectangle rec = new Rectangle(_fieldWidth * item.fieldCoord.X + _shift + _IOshift, _fieldHeight * item.fieldCoord.Y + _shift, _fieldWidth - 2 * (_shift + _IOshift), _fieldHeight - 2 * _shift);
+									g.DrawPolygon(p, new Point[] {  new Point(_fieldWidth * item.fieldCoord.X + _shift + _IOshift, _fieldHeight * item.fieldCoord.Y + _shift),
+																new Point(_fieldWidth * (item.fieldCoord.X + 1) - _shift, _fieldHeight * item.fieldCoord.Y + _shift),
+																new Point(_fieldWidth * (item.fieldCoord.X + 1) - _shift - _IOshift, _fieldHeight * (item.fieldCoord.Y + 1) - _shift),
+																new Point(_fieldWidth * item.fieldCoord.X + _shift, _fieldHeight * (item.fieldCoord.Y + 1) - _shift) });
+									g.DrawString(item.Content, f, Brushes.Black, rec, stringFormat);
+									break;
+								}
+							case BlockTypes.Condition:
+								{
+									Rectangle rec = new Rectangle(_fieldWidth * item.fieldCoord.X + _shift + _IOshift, _fieldHeight * item.fieldCoord.Y + _IOshift + _shift, _fieldWidth - 2 * (_shift + _IOshift), _fieldHeight - 2 * (_shift + _IOshift));
+									g.DrawPolygon(p, new Point[] {  new Point(_fieldWidth * item.fieldCoord.X + _shift, _fieldHeight * item.fieldCoord.Y + _fieldHeight / 2),
 															new Point(_fieldWidth * item.fieldCoord.X + _fieldWidth / 2, _fieldHeight * item.fieldCoord.Y + _shift),
 															new Point(_fieldWidth * (item.fieldCoord.X + 1) - _shift, _fieldHeight * item.fieldCoord.Y + _fieldHeight / 2),
 															new Point(_fieldWidth * item.fieldCoord.X + _fieldWidth / 2, _fieldHeight * (item.fieldCoord.Y + 1) - _shift) });
-							g.DrawString(item.Content, f, Brushes.Black, a, stringFormat);
+									g.DrawString(item.Content, f, Brushes.Black, rec, stringFormat);
+									break;
+								}
+							case BlockTypes.Procedure:
+								{
+									Rectangle rec = new Rectangle(_fieldWidth * item.fieldCoord.X + _shift + (_IOshift / 2), _fieldHeight * item.fieldCoord.Y + _shift, _fieldWidth - 2 * (_shift + (_IOshift / 2)), _fieldHeight - 2 * _shift);
+									g.DrawRectangle(p, new Rectangle(_fieldWidth * item.fieldCoord.X + _shift, _fieldHeight * item.fieldCoord.Y + _shift, _fieldWidth - 2 * _shift, _fieldHeight - 2 * _shift));
+									g.DrawLine(p, new Point(_fieldWidth * item.fieldCoord.X + _shift + (_IOshift / 2), _fieldHeight * item.fieldCoord.Y + _shift), new Point(_fieldWidth * item.fieldCoord.X + _shift + (_IOshift / 2), _fieldHeight * (item.fieldCoord.Y + 1) - _shift));
+									g.DrawLine(p, new Point(_fieldWidth * (item.fieldCoord.X + 1) - _shift - (_IOshift / 2), _fieldHeight * item.fieldCoord.Y + _shift), new Point(_fieldWidth * (item.fieldCoord.X + 1) - _shift - (_IOshift / 2), _fieldHeight * (item.fieldCoord.Y + 1) - _shift));
+									g.DrawString(item.Content, f, Brushes.Black, rec, stringFormat);
+									break;
+								}
+							default:
+								break;
 						}
 					}
 				}

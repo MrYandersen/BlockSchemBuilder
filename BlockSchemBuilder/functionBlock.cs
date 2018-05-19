@@ -8,28 +8,29 @@ using BlockSchemBuilder.Enum;
 
 namespace BlockSchemBuilder
 {
-    class functionBlock : SchemaBlock
-    {
-        string[] words;
+	class functionBlock : SchemaBlock
+	{
+		string[] words;
 
-        public functionBlock(string text, string[] arr) : base(text, BlockTypes.Operator)
-        {
+		public functionBlock(string text, string[] arr) : base(text, BlockTypes.Operator)
+		{
 			words = arr;
-        }
+		}
 
-        public void drawSchematic(object sender, EventArgs e)
-        {
+		public void drawSchematic(object sender, EventArgs e)
+		{
 			SchemaBlock start = new SchemaBlock("Begin", BlockTypes.Start);
 			CodeAnalyzer ca = new CodeAnalyzer(ref words);
 			Dictionary<ExitTypes, List<SchemaBlock>> dic = ca.AnalyzeBlock(0, words.Length - 1, new List<SchemaBlock> { start });
-			foreach(var item in dic[ExitTypes.EndofBlock])
-			{
-				item.links.Add(new SchemaBlock("End", BlockTypes.Start));
-			}
+			SchemaBlock end = new SchemaBlock("End", BlockTypes.Start);
+			foreach (var item in dic[ExitTypes.EndofBlock])
+				item.links.Add(end);
+			foreach (var item in dic[ExitTypes.Return])
+				item.links.Add(end);
 
 			frm_Schema form = new frm_Schema(start);
 			form.Show();
 		}
 
-    }
+	}
 }
