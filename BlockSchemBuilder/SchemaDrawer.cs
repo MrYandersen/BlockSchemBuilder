@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using BlockSchemBuilder.Enum;
+using System.Drawing.Drawing2D;
 
 namespace BlockSchemBuilder
 {
@@ -93,11 +94,11 @@ namespace BlockSchemBuilder
 			}
 		}
 
-		public void Draw(Control canvas)
+		public void DrawBlock(Control canvas)
 		{
 			using (Graphics g = canvas.CreateGraphics())
-			using (Pen p = new Pen(Color.Black, 3))
-			using (Font f = new Font("Consolas", 16, FontStyle.Bold))
+			using (Pen p = new Pen(Color.Black, 2))
+			using (Font f = new Font("Consolas", 14))
 			{
 				StringFormat stringFormat = new StringFormat();
 				stringFormat.Alignment = StringAlignment.Center;
@@ -110,7 +111,7 @@ namespace BlockSchemBuilder
 						{
 							case BlockTypes.Operator:
 								{
-									Rectangle rec = new Rectangle(_fieldWidth * item.fieldCoord.X + _shift, _fieldHeight * item.fieldCoord.Y + _shift, _fieldWidth - 2 * _shift, _fieldHeight - 2 * _shift);
+									Rectangle rec = new Rectangle(_fieldWidth * item.fieldCoord.X + _shift, _fieldHeight * item.fieldCoord.Y + _shift + 2, _fieldWidth - 2 * _shift, _fieldHeight - 2 * (_shift + 2));
 									g.DrawRectangle(p, rec);
 									g.DrawString(item.Content, f, Brushes.Black, rec, stringFormat);
 									break;
@@ -124,7 +125,7 @@ namespace BlockSchemBuilder
 								}
 							case BlockTypes.IO:
 								{
-									Rectangle rec = new Rectangle(_fieldWidth * item.fieldCoord.X + _shift + _IOshift, _fieldHeight * item.fieldCoord.Y + _shift, _fieldWidth - 2 * (_shift + _IOshift), _fieldHeight - 2 * _shift);
+									Rectangle rec = new Rectangle(_fieldWidth * item.fieldCoord.X + _shift + _IOshift, _fieldHeight * item.fieldCoord.Y + _shift + 2, _fieldWidth - 2 * (_shift + _IOshift), _fieldHeight - 2 * (_shift + 2));
 									g.DrawPolygon(p, new Point[] {  new Point(_fieldWidth * item.fieldCoord.X + _shift + _IOshift, _fieldHeight * item.fieldCoord.Y + _shift),
 																new Point(_fieldWidth * (item.fieldCoord.X + 1) - _shift, _fieldHeight * item.fieldCoord.Y + _shift),
 																new Point(_fieldWidth * (item.fieldCoord.X + 1) - _shift - _IOshift, _fieldHeight * (item.fieldCoord.Y + 1) - _shift),
@@ -144,7 +145,7 @@ namespace BlockSchemBuilder
 								}
 							case BlockTypes.Procedure:
 								{
-									Rectangle rec = new Rectangle(_fieldWidth * item.fieldCoord.X + _shift + (_IOshift / 2), _fieldHeight * item.fieldCoord.Y + _shift, _fieldWidth - 2 * (_shift + (_IOshift / 2)), _fieldHeight - 2 * _shift);
+									Rectangle rec = new Rectangle(_fieldWidth * item.fieldCoord.X + _shift + (_IOshift / 2), _fieldHeight * item.fieldCoord.Y + _shift + 2, _fieldWidth - 2 * (_shift + (_IOshift / 2)), _fieldHeight - 2 * (_shift + 2));
 									g.DrawRectangle(p, new Rectangle(_fieldWidth * item.fieldCoord.X + _shift, _fieldHeight * item.fieldCoord.Y + _shift, _fieldWidth - 2 * _shift, _fieldHeight - 2 * _shift));
 									g.DrawLine(p, new Point(_fieldWidth * item.fieldCoord.X + _shift + (_IOshift / 2), _fieldHeight * item.fieldCoord.Y + _shift), new Point(_fieldWidth * item.fieldCoord.X + _shift + (_IOshift / 2), _fieldHeight * (item.fieldCoord.Y + 1) - _shift));
 									g.DrawLine(p, new Point(_fieldWidth * (item.fieldCoord.X + 1) - _shift - (_IOshift / 2), _fieldHeight * item.fieldCoord.Y + _shift), new Point(_fieldWidth * (item.fieldCoord.X + 1) - _shift - (_IOshift / 2), _fieldHeight * (item.fieldCoord.Y + 1) - _shift));
@@ -159,9 +160,43 @@ namespace BlockSchemBuilder
 			}
 		}
 
-		private void PlaceText()
+		public void DrawArrows(Control canvas)
 		{
-
+			using (Graphics g = canvas.CreateGraphics())
+			using (Pen p = new Pen(Color.Black, 3))
+			{
+				AdjustableArrowCap bigArrow = new AdjustableArrowCap(5, 5);
+				p.CustomEndCap = bigArrow;
+				foreach (SchemaBlock item in Matrix)
+				{
+					if (item != null)
+					{
+						foreach (SchemaBlock link in item.links)
+						{
+							if (link.fieldCoord.Y > item.fieldCoord.Y && link.fieldCoord.X == item.fieldCoord.X)
+							{
+								g.DrawLine(p, new Point(_fieldWidth * item.fieldCoord.X + _fieldWidth / 2, _fieldHeight * (item.fieldCoord.Y + 1) - _shift), new Point(_fieldWidth * link.fieldCoord.X + _fieldWidth / 2, _fieldHeight * link.fieldCoord.Y + _shift));
+							}
+							else if (link.fieldCoord.Y > item.fieldCoord.Y && link.fieldCoord.X > item.fieldCoord.X)
+							{
+								g.DrawLines(p, new Point[] { new Point(_fieldWidth * (item.fieldCoord.X + 1) - _shift, _fieldHeight * item.fieldCoord.Y + (_fieldHeight / 2)), new Point(_fieldWidth * link.fieldCoord.X + _fieldWidth / 2, _fieldHeight * item.fieldCoord.Y + _fieldHeight / 2), new Point(_fieldWidth * link.fieldCoord.X + _fieldWidth / 2, _fieldHeight * link.fieldCoord.Y + _shift) });
+							}
+							else if(link.fieldCoord.Y > item.fieldCoord.Y && link.fieldCoord.X < item.fieldCoord.X)
+							{
+								g.DrawLines(p, new Point[] { new Point(_fieldWidth * item.fieldCoord.X + _fieldWidth / 2, _fieldHeight * (item.fieldCoord.Y + 1) - _shift), new Point(_fieldWidth * item.fieldCoord.X + _fieldWidth / 2, _fieldHeight * link.fieldCoord.Y), new Point(_fieldWidth * link.fieldCoord.X + _fieldWidth / 2, _fieldHeight * link.fieldCoord.Y), new Point(_fieldWidth * link.fieldCoord.X + _fieldWidth / 2, _fieldHeight * link.fieldCoord.Y + _shift) });
+							}
+							else if(link.fieldCoord.Y < item.fieldCoord.Y && link.fieldCoord.X == item.fieldCoord.X)
+							{
+								g.DrawLines(p, new Point[] { new Point(_fieldWidth * item.fieldCoord.X + _fieldWidth / 2, _fieldHeight * (item.fieldCoord.Y + 1) - _shift), new Point(_fieldWidth * item.fieldCoord.X + _fieldWidth / 2, _fieldHeight * (item.fieldCoord.Y + 1)), new Point(_fieldWidth * link.fieldCoord.X + 3, _fieldHeight * (item.fieldCoord.Y + 1)), new Point(_fieldWidth * link.fieldCoord.X + 3, _fieldHeight * link.fieldCoord.Y), new Point(_fieldWidth * link.fieldCoord.X + _fieldWidth / 2, _fieldHeight * link.fieldCoord.Y), new Point(_fieldWidth * link.fieldCoord.X + _fieldWidth / 2, _fieldHeight * link.fieldCoord.Y + _shift) });
+							}
+							else if(link.fieldCoord.Y == item.fieldCoord.Y && link.fieldCoord.X > item.fieldCoord.X)
+							{
+								g.DrawLine(p, new Point(_fieldWidth * (item.fieldCoord.X + 1) - _shift, _fieldHeight * item.fieldCoord.Y + (_fieldHeight / 2)), new Point(_fieldWidth * link.fieldCoord.X + _shift, _fieldHeight * item.fieldCoord.Y + _fieldHeight / 2));
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 }

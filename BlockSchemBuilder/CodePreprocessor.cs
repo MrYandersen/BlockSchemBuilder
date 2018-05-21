@@ -47,8 +47,9 @@ namespace BlockSchemBuilder
             {
                 int start = Array.IndexOf(words, "\"");
                 int end = Array.IndexOf(words, "\"", start + 1);
-                for (int i = start; i <= end; i++)
+                for (int i = start + 1; i <= end; i++)
                     words[start] += words[i] + " ";
+				words[start] = words[start].TrimEnd(' ');
                 for (int i = end + 1; i < words.Length; i++)
                 {
                     words[i - end + start] = words[i];

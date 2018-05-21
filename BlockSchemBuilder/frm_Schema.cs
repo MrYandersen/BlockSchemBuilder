@@ -18,18 +18,21 @@ namespace BlockSchemBuilder
 		{
 			InitializeComponent();
 			drawer = new SchemaDrawer( start);
-			drawer.Draw(canvas);
+			drawer.DrawBlock(canvas);
+			drawer.DrawArrows(canvas);
 		}
 
 		private void panel1_Resize(object sender, EventArgs e)
 		{
-			drawer.Draw(canvas);
+			drawer.DrawBlock(canvas);
+			drawer.DrawArrows(canvas);
 			canvas.Invalidate();
 		}
 
 		private void panel1_Paint(object sender, PaintEventArgs e)
 		{
-			drawer.Draw(canvas);
+			drawer.DrawBlock(canvas);
+			drawer.DrawArrows(canvas);
 		}
 	}
 }

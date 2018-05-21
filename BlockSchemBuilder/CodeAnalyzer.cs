@@ -36,6 +36,7 @@ namespace BlockSchemBuilder
 						{
 							text += words[j] + " ";
 						}
+						text = text.Trim(' ');
 						functions[functions.Length - 1] = new functionBlock(text, words.Subsequence(getEndBracket(index) + 2, getEndBracket(getEndBracket(index) + 1) - getEndBracket(index) - 2));
 					}
 				}
@@ -122,7 +123,7 @@ namespace BlockSchemBuilder
 					i++;
 					while (words[++i] != ")")
 						currentBlockContent += words[i] + " ";
-
+					
 					SchemaBlock block = new SchemaBlock(currentBlockContent, BlockTypes.Condition);
 					currentBlockContent = "";
 					foreach (SchemaBlock item in prev)
@@ -142,7 +143,7 @@ namespace BlockSchemBuilder
 						i += 3;
 						while (words[++i] != ")")
 							currentBlockContent += words[i] + " ";
-
+						
 						block = new SchemaBlock(currentBlockContent, BlockTypes.Condition);
 						currentBlockContent = "";
 						foreach (SchemaBlock item in prev)
@@ -180,7 +181,7 @@ namespace BlockSchemBuilder
 					i++;
 					while (words[++i] != ")")
 						currentBlockContent += words[i] + " ";
-
+					
 					SchemaBlock block = new SchemaBlock(currentBlockContent, BlockTypes.Condition);
 					currentBlockContent = "";
 					foreach (SchemaBlock item in prev)
@@ -209,6 +210,59 @@ namespace BlockSchemBuilder
 					continue;
 				}
 
+				if (words[i] == "for")
+				{
+					i++;
+					while (words[++i] != ";")
+						currentBlockContent += words[i] + " ";
+
+					SchemaBlock block = new SchemaBlock(currentBlockContent, BlockTypes.Operator);
+					currentBlockContent = "";
+					foreach (SchemaBlock item in prev)
+					{
+						item.links.Add(block);
+					}
+					prev.Clear();
+					prev.Add(block);
+
+					while (words[++i] != ";")
+						currentBlockContent += words[i] + " ";
+
+					block = new SchemaBlock(currentBlockContent, BlockTypes.Condition);
+					currentBlockContent = "";
+					foreach (SchemaBlock item in prev)
+					{
+						item.links.Add(block);
+					}
+					prev.Clear();
+					prev.Add(block);
+
+					while (words[++i] != ")")
+						currentBlockContent += words[i] + " ";
+
+					SchemaBlock endBlock = new SchemaBlock(currentBlockContent, BlockTypes.Operator);
+					currentBlockContent = "";
+					endBlock.links.Add(block);
+
+					if (words[++i] == "{") { dict = DictMix(dict, AnalyzeBlock(i + 1, i = getEndBracket(i) - 1, prev)); i++; }
+					else dict = DictMix(dict, AnalyzeBlock(i, i = Array.IndexOf(words, ";", i), prev));
+
+					foreach (SchemaBlock item in dict[ExitTypes.EndofBlock])
+					{
+						item.links.Add(endBlock);
+					}
+					dict[ExitTypes.EndofBlock].Clear();
+
+					foreach (SchemaBlock item in dict[ExitTypes.Continue])
+					{
+						item.links.Add(endBlock);
+					}
+					dict[ExitTypes.Continue].Clear();
+
+					prev = prev.Union(dict[ExitTypes.Break]).ToList();
+					continue;
+				}
+
 				//Not working correct!!!
 				if(words[i] == "do")
 				{
@@ -218,6 +272,7 @@ namespace BlockSchemBuilder
 					i+=2;
 					while (words[++i] != ")")
 						currentBlockContent += words[i] + " ";
+
 
 					SchemaBlock block = new SchemaBlock(currentBlockContent, BlockTypes.Condition);
 					currentBlockContent = "";
@@ -257,7 +312,7 @@ namespace BlockSchemBuilder
 					return dict;
 				}
 
-				if(words[i] == "return;")
+				if(words[i] == "return")
 				{
 					dict[ExitTypes.Return] = dict[ExitTypes.Return].Union(prev).ToList();
 					return dict;
@@ -277,15 +332,18 @@ namespace BlockSchemBuilder
 				}
 				else
 				{
-					SchemaBlock block = new SchemaBlock(currentBlockContent, currentBlockType);
-					currentBlockContent = "";
-					currentBlockType = BlockTypes.Operator;
-					foreach (SchemaBlock item in prev)
+					if (currentBlockContent != "")
 					{
-						item.links.Add(block);
+						SchemaBlock block = new SchemaBlock(currentBlockContent, currentBlockType);
+						currentBlockContent = "";
+						currentBlockType = BlockTypes.Operator;
+						foreach (SchemaBlock item in prev)
+						{
+							item.links.Add(block);
+						}
+						prev.Clear();
+						prev.Add(block);
 					}
-					prev.Clear();
-					prev.Add(block);
 				}
 			}
 			dict[ExitTypes.EndofBlock] = prev.Union(dict[ExitTypes.EndofBlock]).ToList();
