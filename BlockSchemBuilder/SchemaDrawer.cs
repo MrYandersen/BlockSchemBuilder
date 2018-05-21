@@ -97,7 +97,7 @@ namespace BlockSchemBuilder
 		{
 			using (Graphics g = canvas.CreateGraphics())
 			using (Pen p = new Pen(Color.Black, 3))
-			using (Font f = new Font("Consolas", 20, FontStyle.Bold))
+			using (Font f = new Font("Consolas", 16, FontStyle.Bold))
 			{
 				StringFormat stringFormat = new StringFormat();
 				stringFormat.Alignment = StringAlignment.Center;

@@ -10,6 +10,7 @@ namespace BlockSchemBuilder.Enum
 	{
 		EndofBlock,
 		Continue,
-		Return
+		Return,
+        Break
 	}
 }
