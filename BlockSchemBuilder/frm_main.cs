@@ -37,5 +37,11 @@ namespace BlockSchemBuilder
                 reader.Close();
             }
         }
+
+        private void справкаToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Help form = new Help();
+            form.Show();
+        }
     }
 }

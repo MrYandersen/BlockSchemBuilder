@@ -12,14 +12,5 @@ namespace BlockSchemBuilder
 		{
 			return arr.Skip(startIndex).Take(length).ToArray();
 		}
-
-		//public static int IndexOfAny<T>(this T[] arr, T[] patterns, int startIndex = 0)
-		//{
-		//	int[] IDs = new int[patterns.Length];
-		//	for (int i = 0; i < IDs.Length; i++)
-		//	{
-		//		IDs[i] = Array.Index
-		//	}
-		//}
 	}
 }

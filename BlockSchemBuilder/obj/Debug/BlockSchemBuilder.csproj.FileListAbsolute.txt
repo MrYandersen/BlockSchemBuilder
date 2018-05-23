@@ -21,3 +21,4 @@ C:\Users\Anastasiia\Documents\GitHub\BlockSchemBuilder\BlockSchemBuilder\obj\Deb
 C:\Users\Anastasiia\Documents\GitHub\BlockSchemBuilder\BlockSchemBuilder\obj\Debug\BlockSchemBuilder.exe
 C:\Users\Anastasiia\Documents\GitHub\BlockSchemBuilder\BlockSchemBuilder\obj\Debug\BlockSchemBuilder.pdb
 C:\Users\Anastasiia\Documents\GitHub\BlockSchemBuilder\BlockSchemBuilder\obj\Debug\BlockSchemBuilder.frm_Schema.resources
+C:\Users\Anastasiia\Documents\GitHub\BlockSchemBuilder\BlockSchemBuilder\obj\Debug\BlockSchemBuilder.Help.resources
