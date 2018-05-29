@@ -183,6 +183,7 @@ namespace BlockSchemBuilder
 						currentBlockContent += words[i] + " ";
 					
 					SchemaBlock block = new SchemaBlock(currentBlockContent, BlockTypes.Condition);
+					block.isCycleCondition = true;
 					currentBlockContent = "";
 					foreach (SchemaBlock item in prev)
 					{
@@ -229,6 +230,7 @@ namespace BlockSchemBuilder
 						currentBlockContent += words[i] + " ";
 
 					block = new SchemaBlock(currentBlockContent, BlockTypes.Condition);
+					block.isCycleCondition = true;
 					currentBlockContent = "";
 					foreach (SchemaBlock item in prev)
 					{

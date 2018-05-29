@@ -20,12 +20,16 @@ namespace BlockSchemBuilder
 		public Point fieldCoord { get; set; }
 		public BlockTypes Type { get => _type; }
 		public bool isPlaced { get; set; }
+		public bool isCycleCondition { get; set; }
+		public bool dontMove { get; set; }
 
 		public SchemaBlock(string text, BlockTypes type)
         {
             Content = text;
             _type = type;
 			links = new List<SchemaBlock>();
+			isCycleCondition = false;
+			dontMove = false;
 			fieldCoord = new Point(0,0);
         }
 

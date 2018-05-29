@@ -18,7 +18,7 @@ namespace BlockSchemBuilder
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void GetFunctionsButtonClickHandler(object sender, EventArgs e)
         {
             string code = txtBox_code.Text;
             CodePreprocessor.removeComments(ref code);
@@ -28,7 +28,7 @@ namespace BlockSchemBuilder
             ca.drawFunctions(flp_metodsList);
         }
 
-        private void открытьcsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void OpenMenuClickHandler(object sender, EventArgs e)
         {
             if(openFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -38,10 +38,15 @@ namespace BlockSchemBuilder
             }
         }
 
-        private void справкаToolStripMenuItem_Click(object sender, EventArgs e)
+        private void HelpMenuClickHandler(object sender, EventArgs e)
         {
             Help form = new Help();
             form.Show();
         }
-    }
+
+		private void txtBox_code_TextChanged(object sender, EventArgs e)
+		{
+			flp_metodsList.Controls.Clear();
+		}
+	}
 }

@@ -39,15 +39,14 @@
 			this.canvas.Name = "canvas";
 			this.canvas.Size = new System.Drawing.Size(2983, 2000);
 			this.canvas.TabIndex = 2;
-			this.canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
-			this.canvas.Resize += new System.EventHandler(this.panel1_Resize);
+			this.canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintHandler);
+			this.canvas.Resize += new System.EventHandler(this.ResizeHandler);
 			// 
 			// frm_Schema
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.AutoScroll = true;
-			this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.ClientSize = new System.Drawing.Size(784, 761);
 			this.Controls.Add(this.canvas);
 			this.Name = "frm_Schema";

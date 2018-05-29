@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="label3.Text" xml:space="preserve">
+  <data name="label_textIntroduction.Text" xml:space="preserve">
     <value>1. Выберите файл, с расширением .cs, содержащий 
 синтаксически правильный код программы, либо
 введите его вручную в соответствующем поле.

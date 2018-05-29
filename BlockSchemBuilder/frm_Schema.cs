@@ -22,14 +22,14 @@ namespace BlockSchemBuilder
 			drawer.DrawArrows(canvas);
 		}
 
-		private void panel1_Resize(object sender, EventArgs e)
+		private void ResizeHandler(object sender, EventArgs e)
 		{
 			drawer.DrawBlock(canvas);
 			drawer.DrawArrows(canvas);
 			canvas.Invalidate();
 		}
 
-		private void panel1_Paint(object sender, PaintEventArgs e)
+		private void PaintHandler(object sender, PaintEventArgs e)
 		{
 			drawer.DrawBlock(canvas);
 			drawer.DrawArrows(canvas);
